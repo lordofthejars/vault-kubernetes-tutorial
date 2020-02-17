@@ -1,0 +1,50 @@
+= Setup
+include::_attributes.adoc[]
+
+[#prerequisite]
+== Prerequisite CLI tools
+
+You will need in this tutorial:
+
+* `minikube` v1.6.2 (or any other Kubernetes cluster local or not).
+* `kubectl` v1.17.0
+
+
+Optional:
+
+* `etcdctl`
+* `httpie`
+* `base64` (in MacOS and Linux are already installed).
+* `helm3`
+
+[#minikube]
+== Setup Minikube
+
+Assuming you've got https://kubernetes.io/docs/setup/learning-environment/minikube/[Minikube installed].
+
+[source, bash-shell]
+----
+minikube start -p vault --memory=8192 --vm-driver=virtualbox 
+
+🙄  [vault] minikube v1.6.2 on Darwin 10.15.3
+✨  Selecting 'virtualbox' driver from user configuration (alternates: [hyperkit])
+🔄  Starting existing virtualbox VM for "vault" ...
+⌛  Waiting for the host to be provisioned ...
+🐳  Preparing Kubernetes v1.17.0 on Docker '19.03.5' ...
+🚀  Launching Kubernetes ...
+🏄  Done! kubectl is now configured to use "vault"
+----
+
+[#optionals]
+== Setup Optionals
+
+`etcdctl` is used to demostrate how secrets are stored inside Kubernetes.
+It can be installed from: https://github.com/etcd-io/etcd/tree/master/etcdctl
+
+`httpie` is used to do HTTP requests.
+You can use `cURL`, `wget`, ...
+It can be installed from: https://httpie.org/doc#installation
+
+`helm3` is used to install Vault into Kubernetes.
+A YAML file is also provided in case you cannot use `helm3`.
+It can be installed from: https://httpie.org/doc#installation

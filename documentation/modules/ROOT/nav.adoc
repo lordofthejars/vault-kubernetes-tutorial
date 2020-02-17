@@ -1,0 +1,6 @@
+* xref:index.adoc[Introduction to Vault]
+
+* xref:1setup.adoc[1. Setup]
+** xref:1setup.adoc#prerequisite[Prerequisites]
+** xref:1setup.adoc#minikube[Setup Minikube]
+** xref:1setup.adoc#optionals[Setup Optionals]
