@@ -1,6 +1,18 @@
 * xref:index.adoc[Introduction to Vault]
 
-* xref:1setup.adoc[1. Setup]
-** xref:1setup.adoc#prerequisite[Prerequisites]
-** xref:1setup.adoc#minikube[Setup Minikube]
-** xref:1setup.adoc#optionals[Setup Optionals]
+* xref:setup.adoc[1. Setup]
+** xref:setup.adoc#prerequisite[Prerequisites]
+** xref:setup.adoc#minikube[Setup Minikube]
+** xref:setup.adoc#optionals[Setup Optionals]
+** xref:setup.adoc#installtutorial[Install Tutorial]
+
+* xref:k8s_secrets.adoc[2. Kubernetes Secrets]
+** xref:k8s_secrets.adoc#createsecrets[Creating Secrets]
+** xref:k8s_secrets.adoc#usesecrets[Using Secrets]
+** xref:k8s_secrets.adoc#aresecretssecrets[Are Secrets Really Secret?]
+
+* xref:k8s_secrets_enc.adoc[3. Kubernetes Secrets with Encryption]
+** xref:k8s_secrets_enc.adoc#encryptingdata[Encrypting Data at Rest]
+** xref:k8s_secrets_enc.adoc#isenoughenc[Is Enough in this way?]
+
+* xref:vault_kms.adoc[4. Kubernetes and KMS]

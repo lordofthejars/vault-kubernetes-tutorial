@@ -46,5 +46,17 @@ You can use `cURL`, `wget`, ...
 It can be installed from: https://httpie.org/doc#installation
 
 `helm3` is used to install Vault into Kubernetes.
-A YAML file is also provided in case you cannot use `helm3`.
+A YAML file is also provided in case you cannot use it.
 It can be installed from: https://httpie.org/doc#installation
+
+[#installtutorial]
+== Install Tutorial
+
+Install the tutorial by running:
+
+[source, shell-session, subs="+macros,+attributes"]
+----
+git clone {urltutorial}
+cd vault-kubernetes-tutorial
+export TUTORIAL_HOME=`pwd`
+----
