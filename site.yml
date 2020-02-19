@@ -1,18 +1,19 @@
 runtime:
   cache_dir: ./.cache/antora
+
 site:
   title: Vault Kubernetes Docs
   url: https://lordofthejars.github.io/vault-kubernetes-tutorial/
 
 content:
   sources:
-  - url: .
-    branches: HEAD
-    start_path: documentation
+    - url: git@github.com:lordofthejars/vault-kubernetes-tutorial.git
+      tags: []
+      branches: master
+      start_path: documentation
 ui:
   bundle:
     url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.0.4/ui-bundle.zip
-    snapshot: true
   supplemental_files: ./supplemental-ui
 output:
   dir: ./gh-pages

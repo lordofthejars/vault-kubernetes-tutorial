@@ -1,0 +1,7 @@
+* https etcd https://www.twistlock.com/labs-blog/kubernetes-secrets-encryption/
+* https vault
+* autounseal
+* rbac
+* exec disable
+* rotation
+https://www.weave.works/blog/managing-secrets-in-kubernetes
