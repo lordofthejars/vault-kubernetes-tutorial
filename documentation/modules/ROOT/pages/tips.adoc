@@ -1,7 +1,8 @@
 * https etcd https://www.twistlock.com/labs-blog/kubernetes-secrets-encryption/
 * https vault
 * autounseal
-* rbac
+* rbac https://stackoverflow.com/questions/52268462/limit-access-to-kubernetes-secret-by-rbac
 * exec disable
 * rotation
 https://www.weave.works/blog/managing-secrets-in-kubernetes
+https://learn.hashicorp.com/vault/operations/production-hardening

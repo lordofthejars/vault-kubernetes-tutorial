@@ -5,7 +5,7 @@ Open one terminal and do a port forwarding between (minikube etcd) and your host
 kubectl port-forward -n kube-system etcd-minikube 2379:2379
 ----
 
-Open another terminal and run thenext commands:
+Open another terminal and run the next commands:
 
 [source, shell-session, subs="+macros,+attributes"]
 ----

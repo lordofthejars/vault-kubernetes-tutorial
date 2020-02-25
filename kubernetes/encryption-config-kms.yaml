@@ -1,0 +1,11 @@
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+- resources:
+  - secrets
+  providers:
+  - kms:
+      name: vault
+      endpoint: unix:///var/lib/minikube/certs/vault-k8s-kms-plugin.sock # <1>
+      cachesize: 100
+  - identity: {}

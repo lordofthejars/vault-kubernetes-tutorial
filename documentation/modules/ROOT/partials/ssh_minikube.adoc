@@ -1,0 +1,18 @@
+The next step is to create an encryption config file where `kube-apiserver` is configured.
+In the case of minikube, run the next command in a terminal:
+
+[source, shell-session]
+----
+minikube ssh
+
+                         _             _
+            _         _ ( )           ( )
+  ___ ___  (_)  ___  (_)| |/')  _   _ | |_      __
+/' _ ` _ `\| |/' _ `\| || , <  ( ) ( )| '_`\  /'__`\
+| ( ) ( ) || || ( ) || || |\`\ | (_) || |_) )(  ___/
+(_) (_) (_)(_)(_) (_)(_)(_) (_)`\___/'(_,__/'`\____)
+
+sudo -i
+----
+
+TIP: If you get an error like `💣  Error getting config:`, then you need to specify the minikube profile as well with `-p` flag. `minikube ssh -p vault`.

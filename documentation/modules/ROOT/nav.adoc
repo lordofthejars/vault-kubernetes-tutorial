@@ -16,3 +16,5 @@
 ** xref:k8s_secrets_enc.adoc#isenoughenc[Is Enough in this way?]
 
 * xref:vault_kms.adoc[4. Kubernetes and KMS]
+** xref:vault_kms.adoc#kmsvault[Vault as KMS]
+** xref:vault_kms.adoc#kmsvault[Vault everywhere]

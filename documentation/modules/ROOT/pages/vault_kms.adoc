@@ -1,2 +1,86 @@
 = Vault and KMS
 include::_attributes.adoc[]
+
+Vault is a tool for securely accessing secrets.
+Vault provides a unified interface to any secret, while providing tight access control and recording a detailed audit log.
+
+The most important features in Vault are:
+
+Secure Secret Storage:: Acts as a key/value store of secrets. These secrets are encrypted by Vault before they are stored.
+Dynamic Secrets:: Generates secrets on-demand for some systems. Ie when app needs to access the database, Vault generates a valid username and password to access it.
+Data Encryption:: Encrypt and decrypts data without storing it (transit). You can think like encryption-as-a-service approach.
+Leasing and Renewal:: Secrets have a lease associated with them. You can renew them.
+Revocation:: Secrets can be revoked with a simple method.
+Audit:: Auditing provides a history of all operations performed by Vault. This can be used as a forensics trail in the case of misuse or compromise of the system.
+
+[#kms]
+== KMS
+
+As stated in previous section, encrypting secrets and storing the key in the same place is not the most secured thing you can do.
+
+Key Management System (KMS) encryption provider uses an envelope encryption scheme to encrypt data in etcd.
+
+.Encryption occurs in the KMS.
+image::sec.003.png[]
+
+[#kmsvault]
+== Vault as KMS
+
+Let's use Vault as KMS and use its capability to encrypt and decrypt data in transit to encrypt and decrypt the Kubernetes secret.
+
+.Encryption occurs in the Vault system in transit mode.
+image::sec.004.png[]
+
+=== Install Vault
+
+For the sake of simplicity, now we are going to add Vault inside the Virtual Machine that is running Kubernetes, but outside Kubernetes cluster.
+
+In a real scenario, you should put Vault outside Kubernetes cluster, probably in a dedicated server, and configure Kubernetes cluster so it can communicate with this server/s.
+But this is out-of-scope of the tutorial.
+
+A script is provided to install Vault inside the minikube VM:
+
+[source, shell-session]
+----
+minikube ssh -p=secrets-vault "$(cat ./scripts/install_vault_kms.sh)"
+----
+
+include::partial$ssh_minikube.adoc[]
+
+Inside the minikube VM, you need to create a config file at  `/var/lib/minikube/certs/encryptionconfigkms.yaml` to do it, just execute the next `echo` command into the SSH'd instance:
+
+[source, shell-session]
+----
+echo "
+include::example$encryption-config-kms.yml[]
+"  | tee /var/lib/minikube/certs/encryptionconfigkms.yaml
+----
+<1> Socket where Vault is listening.
+
+Then `exit` the SSH terminal (twice) and restart minikube by running the next command:
+
+[source, shell-session]
+----
+minikube stop
+
+minikube start -p vault --vm-driver=virtualbox --extra-config=apiserver.encryption-provider-config=/var/lib/minikube/certs/encryptionconfigkms.yaml
+----
+
+=== Create a secret
+
+Then create a new secret:
+
+[source, shell-session]
+----
+kubectl create secret generic db-secret-encrypted-kms --from-literal=username=devuser --from-literal=password=devpassword
+----
+
+To validate that secrets are encrypted now in `etcd`, run the next commands:
+
+:etcdpath: /registry/secrets/default/db-secret-encrypted-kms
+include::partial$etcdctl.adoc[]
+
+And the output:
+
+[#vaulteverywhere]
+== Vault everywhere
