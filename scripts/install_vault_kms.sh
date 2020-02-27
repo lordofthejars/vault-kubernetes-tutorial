@@ -115,3 +115,26 @@ WantedBy=multi-user.target
 EOF
 
 sudo systemctl start vault-k8s-kms-plugin
+
+
+# Configure encryption config
+cat <<EOF | sudo tee /var/lib/minikube/certs/encryption-config.yaml
+kind: EncryptionConfiguration
+apiVersion: apiserver.config.k8s.io/v1
+resources:
+- resources:
+  - secrets
+  providers:
+  - kms:
+      name: vault
+      endpoint: unix:///var/lib/minikube/certs/vault-k8s-kms-plugin.sock
+      cachesize: 100
+  - identity: {}
+EOF
+
+sudo sed -i '/- kube-apiserver/ a \ \ \ \ - --encryption-provider-config=/var/lib/minikube/certs/encryption-config.yaml' /etc/kubernetes/manifests/kube-apiserver.yaml
+
+sudo systemctl daemon-reload
+sudo systemctl stop kubelet
+docker stop $(docker ps -aq)
+sudo systemctl start kubelet

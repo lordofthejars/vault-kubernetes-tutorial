@@ -4,5 +4,6 @@
 * rbac https://stackoverflow.com/questions/52268462/limit-access-to-kubernetes-secret-by-rbac
 * exec disable
 * rotation
+* script to conf everthing
 https://www.weave.works/blog/managing-secrets-in-kubernetes
 https://learn.hashicorp.com/vault/operations/production-hardening

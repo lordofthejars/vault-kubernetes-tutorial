@@ -1,0 +1,21 @@
+To access the service you need to get the pod name and do a port forward.
+Open a new terminal window and run the next commands:
+
+[source, shell-session]
+----
+kubectl get pods
+
+app-676dd6fcc-rhqh6                     1/1     Running   0          3s
+vault-0                                 1/1     Running   1          4h17m
+vault-agent-injector-5b4445f78c-vczz2   1/1     Running   2          4h17m
+----
+
+Get the name of the pod starting with `app` and run:
+
+[source, shell-session]
+----
+kubectl port-forward -n default app-676dd6fcc-rhqh6 8080:8080
+
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+----

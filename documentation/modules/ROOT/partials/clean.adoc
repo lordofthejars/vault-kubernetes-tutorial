@@ -1,0 +1,7 @@
+Stop the minikube instance to clean-up the configuration for the next section.
+
+[source, shell-session]
+----
+minikube stop -p vault
+minikube start -p vault --memory=8192 --vm-driver=virtualbox 
+----

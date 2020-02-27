@@ -17,4 +17,11 @@
 
 * xref:vault_kms.adoc[4. Kubernetes and KMS]
 ** xref:vault_kms.adoc#kmsvault[Vault as KMS]
-** xref:vault_kms.adoc#kmsvault[Vault everywhere]
+** xref:vault_kms.adoc#vaulteverywhere[Vault Everywhere]
+
+* xref:vault.adoc[5. Vault]
+** xref:vault.adoc#vaultk8s[Vault inside Kubernetes and secrets]
+** xref:vault.adoc#deployapp[Deploy an application]
+** xref:vault.adoc#transit[Vault Transit]
+** xref:vault.adoc#quarkustransit[Quarkus Vault Transit]
+** xref:vault.adoc#notesquarkusvault[Final Notes about Quarkus & Vault]

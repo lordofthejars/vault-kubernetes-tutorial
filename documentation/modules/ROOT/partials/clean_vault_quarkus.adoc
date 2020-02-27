@@ -1,0 +1,9 @@
+To undeploy everything you need to run the next commands:
+
+[source, shell-session]
+----
+kubectl delete -f $TUTORIAL_HOME/kubernetes/deploy-service.yml
+kubectl delete -f $TUTORIAL_HOME/scripts/vault-dev-deployment.yml
+----
+
+If port-forwarding is still running, stop it by typing kbd:[Ctrl+C] in the terminal window where it was started.

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: vault-service-demo
+spec:
+  selector:
+    matchLabels:
+      app: vault-service-demo
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: vault-service-demo
+    spec:
+      serviceAccountName: app
+      containers:
+      - name: app
+        image: lordofthejars/vault-service:0.0.1
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app
+  labels:
+    app: vault-service-demo
+---

@@ -31,39 +31,18 @@ Let's use Vault as KMS and use its capability to encrypt and decrypt data in tra
 .Encryption occurs in the Vault system in transit mode.
 image::sec.004.png[]
 
-=== Install Vault
+=== Installing Vault
 
 For the sake of simplicity, now we are going to add Vault inside the Virtual Machine that is running Kubernetes, but outside Kubernetes cluster.
 
 In a real scenario, you should put Vault outside Kubernetes cluster, probably in a dedicated server, and configure Kubernetes cluster so it can communicate with this server/s.
 But this is out-of-scope of the tutorial.
 
-A script is provided to install Vault inside the minikube VM:
+A script is provided to install and configure Vault inside the minikube VM as KMS service:
 
 [source, shell-session]
 ----
-minikube ssh -p=secrets-vault "$(cat ./scripts/install_vault_kms.sh)"
-----
-
-include::partial$ssh_minikube.adoc[]
-
-Inside the minikube VM, you need to create a config file at  `/var/lib/minikube/certs/encryptionconfigkms.yaml` to do it, just execute the next `echo` command into the SSH'd instance:
-
-[source, shell-session]
-----
-echo "
-include::example$encryption-config-kms.yml[]
-"  | tee /var/lib/minikube/certs/encryptionconfigkms.yaml
-----
-<1> Socket where Vault is listening.
-
-Then `exit` the SSH terminal (twice) and restart minikube by running the next command:
-
-[source, shell-session]
-----
-minikube stop
-
-minikube start -p vault --vm-driver=virtualbox --extra-config=apiserver.encryption-provider-config=/var/lib/minikube/certs/encryptionconfigkms.yaml
+minikube ssh -p=secrets-vault "$(cat ./scripts/install_vault_kms.sh)" -p vault
 ----
 
 === Create a secret
@@ -82,5 +61,29 @@ include::partial$etcdctl.adoc[]
 
 And the output:
 
+[source, shell-session]
+----
+/registry/secrets/default/db-secret-encrypted-kms
+k8s:enc:kms:v1:vault:Zmy-key:v1:8IQCbgEQ6/lB3lkkdGtUnosG0ckmXhDNaQNwJ153M5arhsH9QJcd3kG0ur2iA4zWqxIvSDn+k1KYhw4y�y]7�ꭝ��
+�1p9�6*9���t�n��8���ōЏ��P�����};ż<�N!\)��$}���m��i��q����	��b�*�6�l���"o�"ۨ,��5�Y�7<�bY�������^8<f��ׯ�������ӻ�Z�m}T�)�i9�L�IR���u>�>GC�xy�== ��]h
+----
+
+After that, you can stop the port-forwarding process.
+
+=== Clean-up
+
+include::partial$clean.adoc[]
+
 [#vaulteverywhere]
 == Vault everywhere
+
+So far, you've seen that all problems regarding securing correctly the secrets in Kubernetes have been fixed.
+Injecting the secret as environment variable or as a volume has explained in xref:k8s_secrets.adoc#usesecrets[Using Secrets] section.
+
+Doing in that way might be perfectly valid in most of the cases, but there are still some missing use cases:
+
+* Leasing and renewal of the secrets, how to react when a secret is updated (ie dynamic secrets).
+* Secret is injected inside the pod, anyone with access to the pod can find the mounted volumes hence print the secrets.
+* Revoking secrets at once.
+
+For this reason, if you find that these use cases are important to you, you can start using Vault generally and not just in the transit method.
