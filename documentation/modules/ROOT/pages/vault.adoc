@@ -10,12 +10,12 @@ For this workshop, _dev mode_ is used.
 This mode requires no further setup, the Vault is unsealed, no HTTPS and all the storage occurs in-memory among other simplifications.
 This mode is perfect for experimentation.
 
-WARNING: Never use _dev mode_ mode in production as it is unsecured by default.
+WARNING: Never use _dev mode_ in production as it is unsecured by default.
 
 === Install Vault
 
 Vault is installed into Kubernetes using a helm chart that is located at https://github.com/hashicorp/vault-helm.
-To avoid having you to download the chart and install helm, a default `yaml` file produced by running `helm template vault --set='server.dev.enabled=true' -n default .` is provided in the repo.
+To avoid having you to download the chart and install helm, a default `YAML` file produced by running `helm template vault --set='server.dev.enabled=true' -n default .` is provided in the repo.
 
 With Minikube up and running, run the next command from a terminal window:
 
@@ -39,7 +39,7 @@ mutatingwebhookconfiguration.admissionregistration.k8s.io/vault-agent-injector-c
 
 === Configure Vault
 
-You need to configure Vault with a policy, a role to link with the policy and enable and configure the kubernetes authentication method so our service can be authenticated automatically to Vault instead of relaying to a username/password.
+You need to configure Vault with a policy, a role to link with the policy and enable and configure the Kubernetes authentication method so our service can be authenticated automatically to Vault instead of relaying to a username/password.
 
 .Kubernetes Authentication Method
 ****
@@ -55,7 +55,7 @@ include::partial$exec_pod.adoc[]
 ==== Create the policy
 
 Create a policy that allows anyone logged in Vault to read any secret.
-This could be limited by setting a more restricted expression in `path` section.
+This could be limited by setting a more restricted expression in the `path` section.
 
 [source, shell-session]
 ----
@@ -77,7 +77,7 @@ Success! Uploaded policy: vaultapp
 
 ==== Kubernetes auth
 
-The next thing to do is to enable and configure the kubernetes auth method which allows our services to authenticate to Vault service without having to provide any username or password.
+The next thing to do is to enable and configure the Kubernetes auth method which allows our services to authenticate to Vault service without having to provide any username or password.
 
 [source, shell-session]
 ----
@@ -98,7 +98,7 @@ vault write auth/kubernetes/config \
 Success! Data written to: auth/kubernetes/config
 ----
 
-Finally, connect the kubernetes auth method with the previous created policy and the service account created when our service is deployed (seen later).
+Finally, connect the Kubernetes auth method with the previously created policy and the service account created when our service is deployed (seen later).
 
 [source, shell-session]
 ----
@@ -113,7 +113,7 @@ Success! Data written to: auth/kubernetes/role/myapprole
 
 Things important to notice here:
 
-. `myapprole` is a role for the service autoamtically logged to using this mechanism. Our service must be aware of it, and you need to set it on Vault client (seen later).
+. `myapprole` is a role for the service automatically logged to using this mechanism. Our service must be aware of it, and you need to set it on Vault client (seen later).
 . `app` is a Kubernetes service account created in the deployment file.
 . `vaultapp` is the policy created previously.
 
@@ -143,7 +143,7 @@ exit
 [#deployapp]
 == Deploy an application
 
-Now, it is time to deploy an application that authenticate against Vault automatically using the Kubernetes auth mode, and take the secret that you created in the previous section from the Vault service.
+Now, it is time to deploy an application that authenticates against Vault automatically using the Kubernetes auth mode, and takes the secret that you created in the previous section from the Vault service.
 
 For this example, the service is developed using  https://quarkus.io/[Quarkus] but any other framework might offer similar API.
 
@@ -175,9 +175,9 @@ Content-Type: text/plain;charset=UTF-8
 
 === Under the scenes
 
-All the code is avalable at `$TUTORIAL_HOME/services/vault-started`.
+All the code is available at `$TUTORIAL_HOME/services/vault-started`.
 
-The important bits of the code are the REST API resource, the configuration file and the Vault dependency.
+The important bits of the code are the REST API resource, the configuration file, and the Vault dependency.
 
 The configuration file is:
 
@@ -188,7 +188,7 @@ include::example$application.properties[]
 ----
 <1> Vault server location.
 <2> Secrets location. This value was used when creating the secret in Vault.
-<3> Role created when configuring the Kubernetes auth.
+<3> The role created when configuring the Kubernetes auth.
 
 The REST API resource is:
 
@@ -209,13 +209,19 @@ Apart from default Quarkus dependencies, the next dependency must be added:
 </dependency>
 ----
 
-When the Quarkus application is started, Vault extension authenticates using the Kubernetes auth method, and then it queries Vault server to get the required secrets and inject them in the resource.
+When the Quarkus application is started, Vault extension authenticates using the Kubernetes auth method, and then it queries the Vault server to get the required secrets and inject them in the resource.
+
+=== Recap
+
+* [x] Vault can be used to manage secrets.
+* [x] Quarkus integrates perfectly to get secrets from Vault in a declerative or programmatic way.
+* [x] Kubernetes Auth method is sused to authenticate a service against a Vault server without requiring any secret like a password.
 
 [#transit]
 == Transit
 
 Transit mode can be used from your application to encrypt and decrypt data.
-You can think this as a cryptography as a service.
+You can think of this as cryptography as a service.
 
 === Configure Vault for transit
 
@@ -281,7 +287,7 @@ exit
 [#quarkustransit]
 == Quarkus Transit
 
-Quarkus application deployed in the previous section, already implemets the logic to encrypt and decrypt in transit, so you don't need to deploy anything else new.
+The Quarkus application deployed in the previous section already implements the logic to encrypt and decrypt in transit, so you don't need to deploy anything else new.
 
 With previous application deployed, if you undeployed just execute <<Deploy an application>> again and with port-forwarding still running, you can execute the next command to encrypt data:
 
@@ -324,9 +330,16 @@ include::example$SecretsResource.java[tags=transit, indent=0]
 <2> Data is encrypted using the `my-encryption-key` key.
 <3> Data is decrypted using the `my-encryption-key` key.
 
+=== Recap
+
+* [x] Transit mode is cryptography as a service.
+* [x] Quarkus is able to encrypt/decrypt/sign/verify using a Vault server.
+
 === Clean-up
 
-It is not necessary to udeploy anything, as the same services are needed in the next section.
+It is not necessary to undeploy anything, as the same services are needed in the next section.
+
+But if you want to clean everything done in this section, you just need to undeploy everything.
 
 include::partial$clean_vault_quarkus.adoc[]
 
@@ -336,7 +349,7 @@ include::partial$clean_vault_quarkus.adoc[]
 Quarkus integrates with several of Vault features:
 
 * Secrets
-* Username/Password, AppRole and Kubernetes authentication methods
+* Username/Password, AppRole, and Kubernetes authentication methods
 * Dynamic secrets
 * Transit
 * Access Vault secrets programmatically

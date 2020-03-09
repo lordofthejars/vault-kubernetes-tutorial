@@ -15,4 +15,4 @@ minikube ssh
 sudo -i
 ----
 
-TIP: If you get an error like `💣  Error getting config:`, then you need to specify the minikube profile as well with `-p` flag. `minikube ssh -p vault`.
+TIP: If you get an error like `💣  Error getting config:` then you need to specify the minikube profile as well with `-p` flag. `minikube ssh -p vault`.

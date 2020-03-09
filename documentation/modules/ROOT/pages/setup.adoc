@@ -47,12 +47,11 @@ It can be installed from: https://httpie.org/doc#installation
 
 `helm3` is used to install Vault into Kubernetes.
 A YAML file is also provided in case you cannot use it.
-It can be installed from: https://httpie.org/doc#installation
 
 [#installtutorial]
 == Install Tutorial
 
-Install the tutorial by running:
+The tutorial sources need to be installed by running:
 
 [source, shell-session, subs="+macros,+attributes"]
 ----
