@@ -61,7 +61,7 @@ spec:
             secretKeyRef:
               name: db-secret # <2>
               key: username # <3>
-        image: "lordofthejars/greeting-secrets:1.0.0"
+        image: "fedora:33"
         imagePullPolicy: "IfNotPresent"
         name: "greeting"
         ports:
