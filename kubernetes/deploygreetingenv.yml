@@ -8,25 +8,6 @@ metadata:
     group: "lordofthejars"
   name: "greeting"
 ---
-apiVersion: "v1"
-kind: "Service"
-metadata:
-  labels:
-    app: "greeting"
-    version: "1.0-SNAPSHOT"
-    group: "lordofthejars"
-  name: "greeting"
-spec:
-  ports:
-  - name: "http"
-    port: 8080
-    targetPort: 8080
-  selector:
-    app: "greeting"
-    version: "1.0-SNAPSHOT"
-    group: "lordofthejars"
-  type: "ClusterIP"
----
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
@@ -62,6 +43,8 @@ spec:
               name: db-secret # <2>
               key: username # <3>
         image: "fedora:33"
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
         imagePullPolicy: "IfNotPresent"
         name: "greeting"
         ports:
