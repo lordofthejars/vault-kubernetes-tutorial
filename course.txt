@@ -1,0 +1,70 @@
+kubectl create secret generic db-secret --from-literal=username=devuser --from-literal=password=devpassword
+
+
+k get secrets
+k describe secret
+
+cat kubernetes/deploygreetingenv.yml
+k apply
+k exec
+
+k delete
+
+cat deploygreetingvol.yml
+k apply
+k exec
+
+ls /etc/dbsec
+cats
+
+mount | grep dbsec
+
+k delete
+
+k get pods -n kube-system
+kubectl port-forward -n kube-system etcd-secrets 2379:2379
+
+kubectl cp kube-system/etcd-secrets:/var/lib/minikube/certs/etcd/peer.key /tmp/peer.key
+kubectl cp kube-system/etcd-secrets:/var/lib/minikube/certs/etcd/peer.crt /tmp/peer.crt
+
+export \
+  ETCDCTL_API=3 \
+  ETCDCTL_INSECURE_SKIP_TLS_VERIFY=true  \
+  ETCDCTL_CERT=/tmp/peer.crt \
+  ETCDCTL_KEY=/tmp/peer.key
+
+etcdctl get /registry/secrets/default/db-secret
+
+k delete secret db-secret
+
+slides
+
+minikube ssh -p secrets
+sudo -i
+
+echo "
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - aescbc:
+        keys:
+        - name: key1
+          secret: b6sjdRWAPhtacXo8mO1cfgVYWXzwuls3T3NQOo4TBhk= 
+    - identity: {}
+"  | tee /var/lib/minikube/certs/encryptionconfig.yaml
+
+exit x2
+m stop
+m start -p secrets --vm-driver=virtualbox --extra-config=apiserver.encryption-provider-config=/var/lib/minikube/certs/encryptionconfig.yaml
+
+vault kv put secret/myapps/vault-service/config weather-api=123456
+vault kv get secret/myapps/vault-service/config
+
+k apply deployment-service
+
+kubectl port-forward -n default app-676dd6fcc-x65jg 8080:808
+
+/secrets/weatherApi

@@ -14,7 +14,8 @@ EOF
 source /etc/profile.d/vault.sh
 
 # Add Vault user
-sudo adduser -S -s /bin/false -D vault
+sudo addgroup vault
+sudo adduser -G vault -S -s /bin/false -D vault
 
 # Create Vault data
 sudo mkdir -p /etc/vault/{config,data}
@@ -62,6 +63,8 @@ EOF
 sudo systemctl start vault
 
 
+echo "Vault Installed"
+
 # Init vault
 vault operator init -format=json -key-shares=1 -key-threshold=1 | sudo tee /etc/vault/init.json
 vault operator unseal "$(cat /etc/vault/init.json | jq -r .unseal_keys_hex[0])"
@@ -72,9 +75,10 @@ vault token create -id=vault-kms-k8s-plugin-token
 vault secrets enable transit
 vault write -f transit/keys/my-key
 
+echo "Vault Configured"
+
 # Install KMS plugin
-curl -sfLo vault-k8s-kms-plugin.zip https://storage.googleapis.com/sethvargo-assets/vault-k8s-kms-plugin.zip
-unzip vault-k8s-kms-plugin.zip
+curl -sfLo vault-k8s-kms-plugin https://github.com/lordofthejars/kubernetes-vault-kms-plugin/releases/download/book/vault-k8s-kms-plugin-amd64
 sudo mv vault-k8s-kms-plugin /bin/vault-k8s-kms-plugin
 sudo chmod +x /bin/vault-k8s-kms-plugin
 
@@ -116,6 +120,7 @@ EOF
 
 sudo systemctl start vault-k8s-kms-plugin
 
+echo "KMS plugin installed"
 
 # Configure encryption config
 cat <<EOF | sudo tee /var/lib/minikube/certs/encryption-config.yaml

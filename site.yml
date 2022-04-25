@@ -17,3 +17,8 @@ ui:
   supplemental_files: ./supplemental-ui
 output:
   dir: ./gh-pages
+asciidoc:
+  attributes:
+    source-highlighter: highlightjs
+  extensions:
+  - ./lib/include-shell

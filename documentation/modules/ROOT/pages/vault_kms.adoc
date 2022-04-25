@@ -42,7 +42,7 @@ A script is provided to install and configure Vault inside the minikube VM as KM
 
 [source, shell-session]
 ----
-minikube ssh -p=secrets-vault "$(cat ./scripts/install_vault_kms.sh)" -p vault
+minikube ssh -p secrets-vault "$(cat ./scripts/install_vault_kms.sh)"
 ----
 
 === Create a secret
